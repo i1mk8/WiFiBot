@@ -1,0 +1,10 @@
+{
+    "bot_token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+    "bot_users": [123456789],
+    "timezone": "Asia/Yekaterinburg",
+    "schedule_enabled": false,
+    "schedule_down_hour": 23,
+    "schedule_down_minute": 0,
+    "schedule_up_hour": 6,
+    "schedule_up_minute": 30
+}
