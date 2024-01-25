@@ -10,7 +10,7 @@
 ```
 $ ssh Admin@192.168.0.1
 # cd /etc
-# wget -O install.sh  https://raw.githubusercontent.com/i1mk8/WiFiBot/install.sh
+# wget -O install.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/install.sh
 # chmod +x install.sh
 # ./install.sh
 ```
