@@ -9,12 +9,14 @@ read -p "Введите временную зону (список - https://gith
 
 echo "{\"bot_token\": \"${BOT_TOKEN}\", \"bot_users\": ${BOT_USERS}, \"timezone\": \"${TIMEZONE}\", \"schedule_enabled\": false, \"schedule_down_hour\": 0, \"schedule_down_minute\": 0, \"schedule_up_hour\": 0, \"schedule_up_minute\": 0}" > "${WORK_DIR}/wifi_bot.json"
 
-wget -O "${WORK_DIR}/WiFiBot" https://github.com/i1mk8/WiFiBot/releases/latest/download/WiFiBot
+EXECUTABLE="${WORK_DIR}/WiFiBot"
+wget -O $EXECUTABLE https://github.com/i1mk8/WiFiBot/releases/latest/download/WiFiBot
+chmod +x $EXECUTABLE
 
 mkdir /etc/ssl
 wget -O /etc/ssl/cert.pem https://curl.se/ca/cacert-2023-12-12.pem
 
-echo "@reboot ${WORK_DIR}/WiFiBot" > "${WORK_DIR}/cron"
+echo "@reboot ${EXECUTABLE}" > "${WORK_DIR}/cron"
 crontab "${WORK_DIR}/cron"
 
 fs save
