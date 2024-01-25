@@ -16,3 +16,6 @@ wget -O /etc/ssl/cert.pem https://curl.se/ca/cacert-2023-12-12.pem
 
 echo "@reboot ${WORK_DIR}/WiFiBot" > "${WORK_DIR}/cron"
 crontab "${WORK_DIR}/cron"
+
+fs save
+reboot
