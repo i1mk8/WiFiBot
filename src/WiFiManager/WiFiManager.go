@@ -14,7 +14,9 @@ const (
 	CommandDown = "iwpriv %s set RadioOn=0"
 )
 
-var interfaces = [2]string{"ra0", "rai0"}
+var (
+	interfaces = [2]string{"ra0", "rai0"}
+)
 
 func InterfacesUp() {
 	for _, element := range interfaces {

@@ -9,8 +9,6 @@ read -p "Введите временную зону (список - https://gith
 
 echo "{\"bot_token\": \"${BOT_TOKEN}\", \"bot_users\": ${BOT_USERS}, \"timezone\": \"${TIMEZONE}\", \"schedule_enabled\": false, \"schedule_down_hour\": 0, \"schedule_down_minute\": 0, \"schedule_up_hour\": 0, \"schedule_up_minute\": 0}" > "${WORK_DIR}/wifi_bot.json"
 
-wget -O "${WORK_DIR}/cert.pem" https://curl.se/ca/cacert-2023-12-12.pem
-
 EXECUTABLE="${WORK_DIR}/on-startup.sh"
 wget -O $EXECUTABLE https://raw.githubusercontent.com/i1mk8/WiFiBot/master/on-startup.sh
 chmod +x $EXECUTABLE

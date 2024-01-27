@@ -3,8 +3,8 @@ package bot
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"embed"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -19,10 +19,14 @@ import (
 )
 
 const (
-	CertPath = "./cert.pem"
+	CertPath = "cert.pem"
 )
 
-var bot *tgbotapi.BotAPI
+var (
+	//go:embed cert.pem
+	fs  embed.FS
+	bot *tgbotapi.BotAPI
+)
 
 func sendMessage(message tgbotapi.MessageConfig) {
 	_, err := bot.Send(message)
@@ -32,7 +36,7 @@ func sendMessage(message tgbotapi.MessageConfig) {
 }
 
 func StartBot() {
-	cert, err := ioutil.ReadFile(CertPath)
+	cert, err := fs.ReadFile(CertPath)
 	if err != nil {
 		log.Panic(err)
 	}

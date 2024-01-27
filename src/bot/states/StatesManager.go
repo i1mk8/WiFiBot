@@ -1,6 +1,8 @@
 package states
 
-var users []StatesStruct
+var (
+	users []StatesStruct
+)
 
 func GetUser(userId int64) (*StatesStruct, *int) {
 	for index, user := range users {
