@@ -1,8 +1,12 @@
 package bot
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -12,6 +16,10 @@ import (
 	WifiManager "github.com/i1mk8/WifiBot/WiFiManager"
 	"github.com/i1mk8/WifiBot/bot/states"
 	"github.com/i1mk8/WifiBot/utils"
+)
+
+const (
+	CertPath = "./cert.pem"
 )
 
 var bot *tgbotapi.BotAPI
@@ -24,9 +32,23 @@ func sendMessage(message tgbotapi.MessageConfig) {
 }
 
 func StartBot() {
-	var err error
-	bot, err = tgbotapi.NewBotAPI(ConfigManager.GetConfig().BotToken)
+	cert, err := ioutil.ReadFile(CertPath)
+	if err != nil {
+		log.Panic(err)
+	}
 
+	certPool := x509.NewCertPool()
+	certPool.AppendCertsFromPEM(cert)
+
+	httpClient := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				RootCAs: certPool,
+			},
+		},
+	}
+
+	bot, err = tgbotapi.NewBotAPIWithClient(ConfigManager.GetConfig().BotToken, tgbotapi.APIEndpoint, httpClient)
 	if err != nil {
 		log.Panic(err)
 	}
