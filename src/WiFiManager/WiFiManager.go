@@ -1,7 +1,6 @@
 package WifiManager
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -9,25 +8,27 @@ import (
 	"github.com/i1mk8/WifiBot/utils"
 )
 
-const (
-	CommandUp   = "iwpriv %s set RadioOn=1"
-	CommandDown = "iwpriv %s set RadioOn=0"
-)
-
 var (
-	interfaces = [2]string{"ra0", "rai0"}
+	commandName = "iwpriv"
+	commandArgs = [3]string{"", "set", ""}
+	interfaces  = [2]string{"ra0", "rai0"}
 )
 
-func InterfacesUp() {
+func setInterfacesState(state string) {
+	commandArgs[2] = "RadioOn=" + state
+
 	for _, element := range interfaces {
-		utils.Execute(fmt.Sprintf(CommandUp, element))
+		commandArgs[0] = element
+		utils.Execute(commandName, commandArgs[:])
 	}
 }
 
+func InterfacesUp() {
+	setInterfacesState("1")
+}
+
 func InterfacesDown() {
-	for _, element := range interfaces {
-		utils.Execute(fmt.Sprintf(CommandDown, element))
-	}
+	setInterfacesState("0")
 }
 
 func Auto() {

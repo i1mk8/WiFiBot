@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-func Execute(command string) {
-	result := exec.Command(command)
+func Execute(name string, args []string) {
+	result := exec.Command(name, args...)
 	_, stderr := result.Output()
 
 	if stderr != nil {
