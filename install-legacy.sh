@@ -9,7 +9,7 @@ read -p "Введите временную зону (список - https://gith
 
 echo "{\"bot_token\": \"${BOT_TOKEN}\", \"bot_users\": [${BOT_USERS}], \"timezone\": \"${TIMEZONE}\", \"schedule_enabled\": false, \"schedule_down_hour\": 0, \"schedule_down_minute\": 0, \"schedule_up_hour\": 0, \"schedule_up_minute\": 0}" > "${WORK_DIR}/wifi_bot.json"
 
-EXECUTABLE="/etc/scripts/usersrvc.sh"
+EXECUTABLE="/etc/scripts/wan_up.sh"
 wget -O - https://raw.githubusercontent.com/i1mk8/WiFiBot/master/usersrvc.sh >> $EXECUTABLE
 chown daemon:daemon $EXECUTABLE
 chmod +x $EXECUTABLE
