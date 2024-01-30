@@ -1,7 +1,6 @@
 package WifiManager
 
 import (
-	"log"
 	"time"
 
 	"github.com/i1mk8/WifiBot/ConfigManager"
@@ -36,12 +35,7 @@ func Auto() {
 		config := ConfigManager.GetConfig()
 		if config.ScheduleEnabled {
 
-			location, err := time.LoadLocation(config.Timezone)
-			if err != nil {
-				log.Panic(err)
-			}
-
-			nowTime := time.Now().In(location)
+			nowTime := time.Now()
 			if nowTime.Hour() == config.ScheduleDownHour && nowTime.Minute() == config.ScheduleDownMinute {
 				InterfacesDown()
 			} else if nowTime.Hour() == config.ScheduleUpHour && nowTime.Minute() == config.ScheduleUpMinute {
