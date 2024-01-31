@@ -32,3 +32,7 @@ func IntToString(value int) string {
 	}
 	return result
 }
+
+func SaveFileSystem() {
+	Execute("fs", []string{"save"})
+}

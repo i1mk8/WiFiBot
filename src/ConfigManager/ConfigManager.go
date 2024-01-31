@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/i1mk8/WifiBot/utils"
 )
 
 const (
@@ -35,4 +37,6 @@ func SetConfig(config ConfigStruct) {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	utils.SaveFileSystem()
 }
