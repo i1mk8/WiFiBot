@@ -1,3 +1,4 @@
+// Код для управления конфигом бота
 package ConfigManager
 
 import (
@@ -10,9 +11,10 @@ import (
 )
 
 const (
-	ConfigPath = "wifi_bot.json"
+	ConfigPath = "wifi_bot.json" // Путь до конфига
 )
 
+// Получение конфига
 func GetConfig() ConfigStruct {
 	file, err := os.Open(ConfigPath)
 	if err != nil {
@@ -27,6 +29,7 @@ func GetConfig() ConfigStruct {
 	return config
 }
 
+// Сохранение конфига
 func SetConfig(config ConfigStruct) {
 	configJson, err := json.Marshal(config)
 	if err != nil {

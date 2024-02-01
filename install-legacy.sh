@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Установщик для ПО 7.2.x и старее
+
 WORK_DIR=/etc/WiFiBot
 mkdir $WORK_DIR
 

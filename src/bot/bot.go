@@ -1,3 +1,4 @@
+// Код для получения/отправки сообщений в telegram
 package bot
 
 import (
@@ -28,14 +29,10 @@ var (
 	bot *tgbotapi.BotAPI
 )
 
-func sendMessage(message tgbotapi.MessageConfig) {
-	_, err := bot.Send(message)
-	if err != nil {
-		log.Panic(err)
-	}
-}
-
+// Запуск бота
 func StartBot() {
+
+	// Сертификат необходим для подключения к telegram по https (на роутере сертификат отсутсвует)
 	cert, err := fs.ReadFile(CertPath)
 	if err != nil {
 		log.Panic(err)
@@ -61,6 +58,15 @@ func StartBot() {
 	handleNewMessages()
 }
 
+// Отправка сообщения юзеру
+func sendMessage(message tgbotapi.MessageConfig) {
+	_, err := bot.Send(message)
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
+// Получение новых сообщений от юзера
 func handleNewMessages() {
 	update := tgbotapi.NewUpdate(0)
 	update.Timeout = 60
@@ -74,20 +80,25 @@ func handleNewMessages() {
 
 				switch state.State {
 
+				// Главное меню
 				case states.MainMenu:
 					handleMainMenu(message)
 
+				// Меню управления расписанием
 				case states.ScheduleMenu:
 					handleScheduleMenu(message)
 
+				// Меню редактированиия времени выключения Wi-Fi
 				case states.EditScheduleDown:
 					handleEditScheduleDown(message)
 
+				// Меню редактированиия времени включения Wi-Fi
 				case states.EditScheduleUp:
 					handleEditScheduleUp(message)
 				}
 
 			} else {
+				// Если у юзера не установлено никакое состояние, то проверяем, что он в списке пользователей бота и отправляем главное меню
 				config := ConfigManager.GetConfig()
 				if utils.Int64InSlice(config.Users, message.Message.From.ID) {
 					sendMainMenu(message.Message.Chat.ID)
@@ -97,6 +108,7 @@ func handleNewMessages() {
 	}
 }
 
+// Отправка юзеру главного меню
 func sendMainMenu(userId int64) {
 	states.SetUser(userId, states.MainMenu)
 
@@ -106,19 +118,23 @@ func sendMainMenu(userId int64) {
 	sendMessage(message)
 }
 
+// Реакция на команды юзера в главном меню
 func handleMainMenu(message tgbotapi.Update) {
 	messageText := strings.ToLower(message.Message.Text)
 	newMessage := tgbotapi.NewMessage(message.Message.Chat.ID, "")
 	switch messageText {
 
+	// Включение Wi-FI
 	case "вкл":
 		WifiManager.InterfacesUp()
 		newMessage.Text = "Успешно!"
 
+	// Выключение Wi-FI
 	case "выкл":
 		WifiManager.InterfacesDown()
 		newMessage.Text = "Успешно!"
 
+	// Управление расписанием
 	case "расписание":
 		sendScheduleMenu(message.Message.From.ID)
 		return
@@ -130,6 +146,7 @@ func handleMainMenu(message tgbotapi.Update) {
 	sendMessage(newMessage)
 }
 
+// Получаем статус работы расписания в текстовом виде
 func getScheduleStatus() string {
 	config := ConfigManager.GetConfig()
 
@@ -149,6 +166,7 @@ func getScheduleStatus() string {
 	return fmt.Sprintf("Статус: %s\nВЫКЛ: %s:%s\nВКЛ: %s:%s", status, scheduleDownHour, scheduleDownMinute, scheduleUpHour, scheduleUpMinute)
 }
 
+// Отправка юзеру меню управления расписанием
 func sendScheduleMenu(userId int64) {
 	states.SetUser(userId, states.ScheduleMenu)
 
@@ -158,11 +176,13 @@ func sendScheduleMenu(userId int64) {
 	sendMessage(message)
 }
 
+// Реакция на команды юзера в меню управления расписанием
 func handleScheduleMenu(message tgbotapi.Update) {
 	messageText := strings.ToLower(message.Message.Text)
 	newMessage := tgbotapi.NewMessage(message.Message.Chat.ID, "")
 	switch messageText {
 
+	// Включение расписания
 	case "вкл":
 		config := ConfigManager.GetConfig()
 		config.ScheduleEnabled = true
@@ -170,6 +190,7 @@ func handleScheduleMenu(message tgbotapi.Update) {
 
 		newMessage.Text = "Успешно!"
 
+	// Выключение расписания
 	case "выкл":
 		config := ConfigManager.GetConfig()
 		config.ScheduleEnabled = false
@@ -177,9 +198,11 @@ func handleScheduleMenu(message tgbotapi.Update) {
 
 		newMessage.Text = "Успешно!"
 
+	// Просмотр статуса расписания
 	case "просмотр":
 		newMessage.Text = getScheduleStatus()
 
+	// Редактирование расписания
 	case "изменить":
 		statusMessage := tgbotapi.NewMessage(message.Message.Chat.ID, getScheduleStatus())
 		sendMessage(statusMessage)
@@ -188,6 +211,7 @@ func handleScheduleMenu(message tgbotapi.Update) {
 		newMessage.Text = "Введите время выключения\nФормат: HH:MM"
 		newMessage.ReplyMarkup = CancelKeyboard
 
+	// Переход назад, в главное меню
 	case "назад":
 		sendMainMenu(message.Message.Chat.ID)
 		return
@@ -199,6 +223,13 @@ func handleScheduleMenu(message tgbotapi.Update) {
 	sendMessage(newMessage)
 }
 
+/*
+Получение двух чисел из текста, который отправил юзер. Если текст не является числами, то возвращается nil.
+Например:
+20:30 -> 20, 30
+06:30 -> 6, 30
+рандомный текст -> nil
+*/
 func parseEditScheduleMessage(text string) *[2]int {
 	data := strings.Split(text, ":")
 
@@ -221,13 +252,16 @@ func parseEditScheduleMessage(text string) *[2]int {
 	return nil
 }
 
+// Реакция на команды юзера в меню редактирования расписания (время выключения Wi-FI)
 func handleEditScheduleDown(message tgbotapi.Update) {
 	messageText := strings.ToLower(message.Message.Text)
 
+	// Переход назад, в меню управлением расписанием
 	if messageText == "отмена" {
 		sendScheduleMenu(message.Message.Chat.ID)
 
 	} else {
+		// Проверка и сохранение нового расписания
 		newMessage := tgbotapi.NewMessage(message.Message.Chat.ID, "")
 		data := parseEditScheduleMessage(messageText)
 
@@ -252,13 +286,16 @@ func handleEditScheduleDown(message tgbotapi.Update) {
 	}
 }
 
+// Реакция на команды юзера в меню редактирования расписания (время включения Wi-FI)
 func handleEditScheduleUp(message tgbotapi.Update) {
 	messageText := strings.ToLower(message.Message.Text)
 
+	// Переход назад, в меню управлением расписанием
 	if messageText == "отмена" {
 		sendScheduleMenu(message.Message.Chat.ID)
 
 	} else {
+		// Проверка и сохранение нового расписания
 		data := parseEditScheduleMessage(messageText)
 
 		if data != nil {

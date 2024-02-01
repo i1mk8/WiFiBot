@@ -1,3 +1,4 @@
+// Код для управления Wi-Fi
 package WifiManager
 
 import (
@@ -10,9 +11,14 @@ import (
 var (
 	commandName = "iwpriv"
 	commandArgs = [3]string{"", "set", ""}
-	interfaces  = [2]string{"ra0", "rai0"}
+	interfaces  = [2]string{"ra0", "rai0"} // Интерфейсы Wi-Fi
 )
 
+/*
+Установка состояния работы интерфейсов.
+1 - Включено
+0 - Выключено
+*/
 func setInterfacesState(state string) {
 	commandArgs[2] = "RadioOn=" + state
 
@@ -22,14 +28,17 @@ func setInterfacesState(state string) {
 	}
 }
 
+// Включение Wi-Fi
 func InterfacesUp() {
 	setInterfacesState("1")
 }
 
+// Выключение Wi-Fi
 func InterfacesDown() {
 	setInterfacesState("0")
 }
 
+// Авто включение/выключение Wi-Fi по расписанию
 func Auto() {
 	for true {
 		config := ConfigManager.GetConfig()

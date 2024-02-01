@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	utils.Execute("rm", []string{os.Args[0]})
+	utils.Execute("rm", []string{os.Args[0]}) // Удаляем исполняемый файл бота, так как он слишком большой и из-за этого сохранение файловой системы является невозможным
 	go WifiManager.Auto()
 	bot.StartBot()
 }

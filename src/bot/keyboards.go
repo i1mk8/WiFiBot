@@ -1,3 +1,4 @@
+// Клавиатуры с командами для взаимодействия с ботом
 package bot
 
 import (
@@ -5,6 +6,7 @@ import (
 )
 
 var (
+	// Клавиатура главного меню
 	MainMenuKeyboard = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("ВКЛ"),
@@ -15,6 +17,7 @@ var (
 		),
 	)
 
+	// Клавиатура меню управления расписанием
 	ScheduleKeyboard = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("ВКЛ"),
@@ -29,6 +32,7 @@ var (
 		),
 	)
 
+	// Клавиатура с кнопкой отмена (используется, когда юзеру нужно отправить какую-нибудь информацию боту. например, время включения/выключения Wi-FI)
 	CancelKeyboard = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Отмена"),
