@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	ConfigPath = "wifi_bot.json" // Путь до конфига
+	ConfigPath = "/etc/wifi_bot.json" // Путь до конфига
 )
 
 // Получение конфига
