@@ -6,13 +6,24 @@
 ![Главное меню](./screenshots/bot_main_menu.png)
 ![Меню управления расписанием](./screenshots/bot_schedule_menu.png)
 
-## Установка скриптом
+## Установка
+
+### ПО 7.5.30 и новее
 ```
 $ ssh Admin@192.168.0.1
 # cd /etc
 # wget -O install.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/install.sh
 # chmod +x install.sh
 # ./install.sh
+```
+
+### ПО 7.2.x и старее
+```
+$ ssh Admin@192.168.0.1
+# cd /etc
+# wget -O install-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/install-legacy.sh
+# chmod +x install-legacy.sh
+# ./install-legacy.sh
 ```
 
 ## Сборка
