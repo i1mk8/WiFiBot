@@ -4,16 +4,18 @@ import (
 	"log"
 	"os/exec"
 	"strconv"
+	"strings"
 )
 
 // Выполнение команды
-func Execute(name string, args []string) {
+func Execute(name string, args []string) string {
 	result := exec.Command(name, args...)
-	_, stderr := result.Output()
+	stdout, stderr := result.Output()
 
 	if stderr != nil {
 		log.Panic(stderr)
 	}
+	return string(stdout)
 }
 
 // Проверка наличия в списке числа
@@ -44,4 +46,18 @@ func IntToString(value int) string {
 // Сохранение файловой системы (чтобы конфиг не сбрасывался при перезагрузке роутера)
 func SaveFileSystem() {
 	Execute("fs", []string{"save"})
+}
+
+/*
+Получаем текущее время на роутере.
+Эта функция необходима, так как time.Now() работает не корректно и всегда возвращает время по UTC, вместо установленной временной зоны
+*/
+func GetCurrentTime() (int, int) {
+	output := Execute("date", []string{"+%H,%M,"})
+	parsedOutput := strings.Split(output, ",")
+
+	hour, _ := strconv.Atoi(parsedOutput[0])
+	minute, _ := strconv.Atoi(parsedOutput[1])
+
+	return hour, minute
 }

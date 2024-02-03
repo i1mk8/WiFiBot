@@ -44,14 +44,14 @@ func Auto() {
 		config := ConfigManager.GetConfig()
 		if config.ScheduleEnabled {
 
-			nowTime := time.Now()
-			if nowTime.Hour() == config.ScheduleDownHour && nowTime.Minute() == config.ScheduleDownMinute {
+			hour, minute := utils.GetCurrentTime()
+			if hour == config.ScheduleDownHour && minute == config.ScheduleDownMinute {
 				InterfacesDown()
-			} else if nowTime.Hour() == config.ScheduleUpHour && nowTime.Minute() == config.ScheduleUpMinute {
+			} else if hour == config.ScheduleUpHour && minute == config.ScheduleUpMinute {
 				InterfacesUp()
 			}
 
 		}
-		time.Sleep(30 * time.Second)
+		time.Sleep(60 * time.Second)
 	}
 }
