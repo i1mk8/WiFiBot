@@ -12,7 +12,7 @@
 ```
 $ ssh Admin@192.168.0.1
 # cd /tmp
-# wget -O install.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/install.sh
+# wget -O install.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/install.sh
 # chmod +x install.sh
 # ./install.sh
 ```
@@ -21,9 +21,29 @@ $ ssh Admin@192.168.0.1
 ```
 $ ssh Admin@192.168.0.1
 # cd /tmp
-# wget -O install-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/install-legacy.sh
+# wget -O install-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/install-legacy.sh
 # chmod +x install-legacy.sh
 # ./install-legacy.sh
+```
+
+## Удаление
+
+### ПО 7.5.30 и новее
+```
+$ ssh Admin@192.168.0.1
+# cd /tmp
+# wget -O uninstall.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/uninstall.sh
+# chmod +x uninstall.sh
+# ./uninstall.sh
+```
+
+### ПО 7.2.x и старее
+```
+$ ssh Admin@192.168.0.1
+# cd /tmp
+# wget -O uninstall-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/uninstall-legacy.sh
+# chmod +x uninstall-legacy.sh
+# ./uninstall-legacy.sh
 ```
 
 ## Сборка
