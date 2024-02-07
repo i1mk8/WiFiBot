@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# Скрипт удаления для ПО 7.5.30 и новее
-rm /etc/wifi_bot.json
-rm /etc/scripts/usersrvc.sh
+CRON="/tmp/cron"
+crontab -l > $CRON
+sed -e "s~@reboot /etc/WiFiBot/startup.sh~~g" -i $CRON
+crontab $CRON
+
+rm -rf "/etc/WiFiBot"
 
 fs save
 reboot

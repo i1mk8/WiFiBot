@@ -7,8 +7,7 @@
 ![Меню управления расписанием](./screenshots/bot_schedule_menu.png)
 
 ## Установка
-
-### ПО 7.5.30 и новее
+Включаем crontab: Админ панель > Сервисы > Разное > Планировщик
 ```
 $ ssh Admin@192.168.0.1
 # cd /tmp
@@ -17,18 +16,7 @@ $ ssh Admin@192.168.0.1
 # ./install.sh
 ```
 
-### ПО 7.2.x и старее
-```
-$ ssh Admin@192.168.0.1
-# cd /tmp
-# wget -O install-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/install-legacy.sh
-# chmod +x install-legacy.sh
-# ./install-legacy.sh
-```
-
 ## Удаление
-
-### ПО 7.5.30 и новее
 ```
 $ ssh Admin@192.168.0.1
 # cd /tmp
@@ -36,15 +24,9 @@ $ ssh Admin@192.168.0.1
 # chmod +x uninstall.sh
 # ./uninstall.sh
 ```
+Выключаем crontab: Админ панель > Сервисы > Разное > Планировщик
 
-### ПО 7.2.x и старее
-```
-$ ssh Admin@192.168.0.1
-# cd /tmp
-# wget -O uninstall-legacy.sh https://raw.githubusercontent.com/i1mk8/WiFiBot/master/scripts/uninstall-legacy.sh
-# chmod +x uninstall-legacy.sh
-# ./uninstall-legacy.sh
-```
+Примечание: Выключение crontab не обязательно, скрипт автоматически удалит себя из crontab. Если crontab больше нигде не испольузется, то можно его отключить.
 
 ## Сборка
 Перед сборкой необходимо изменить [os_linux.go](https://github.com/golang/go/blob/8b23b7b04234424791e26b8d2d26f61ef1311a9f/src/runtime/os_linux.go#L532), добавив `&& sig != 128` в условие на 532 строке.
