@@ -267,6 +267,7 @@ func handleEditScheduleDown(message tgbotapi.Update) {
 
 		if data != nil {
 			config := ConfigManager.GetConfig()
+			config.ScheduleEnabled = true
 			config.ScheduleDownHour = data[0]
 			config.ScheduleDownMinute = data[1]
 			ConfigManager.SetConfig(config)
@@ -300,6 +301,7 @@ func handleEditScheduleUp(message tgbotapi.Update) {
 
 		if data != nil {
 			config := ConfigManager.GetConfig()
+			config.ScheduleEnabled = true
 			config.ScheduleUpHour = data[0]
 			config.ScheduleUpMinute = data[1]
 			ConfigManager.SetConfig(config)
